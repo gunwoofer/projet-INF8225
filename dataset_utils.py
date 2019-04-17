@@ -20,6 +20,15 @@ def telechargerDataSet(keywords, taille):
         os.rename(src, dst) 
         i += 1
 
+def chargerDataset():
+    datasetX = []
+    datasetY = []
+    for image in os.listdir("dataset"):
+        (_, X, Y) = ouvrirImage("dataset/" + image, affichage=False)
+        datasetX.append(X)
+        datasetY.append(Y)
+    return (np.array(datasetX), np.array(datasetY))
+
 def ouvrirImage(path, affichage = False):
     '''
     Ouvre une image 
