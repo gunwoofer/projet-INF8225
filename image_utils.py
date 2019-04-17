@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import skimage.color as color
 
+
 def afficherImageLAB(img_lab):
     plt.imshow(color.lab2rgb(img_lab))
     plt.show()
