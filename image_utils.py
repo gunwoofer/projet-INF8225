@@ -28,3 +28,8 @@ def show_images(images, titles):
         subplot.set_title(titles[i-1])
 
     plt.show(block=True)
+
+
+def afficherPrediction(grayscale, ab):
+    lab = np.concatenate((grayscale, ab), axis=2)
+    afficherImageLAB(lab)

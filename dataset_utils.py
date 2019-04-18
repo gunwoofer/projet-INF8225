@@ -26,7 +26,11 @@ def chargerDataset():
     for image in os.listdir("dataset"):
         (_, X, Y) = ouvrirImage("dataset/" + image, affichage=False)
         datasetX.append(X)
-        datasetY.append(Y)
+        datasetY.append(Y/128)  
+        # les composantes a et b sont entre -128 et 128
+        # comme notre modele retourne un truc entre -1 et 1 (avec tanh a la fin)
+        # il faut aussi diviser par 128 nos label pour bien calculer la perte
+
     return (np.array(datasetX), np.array(datasetY))
 
 def ouvrirImage(path, affichage = False):
