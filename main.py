@@ -4,17 +4,16 @@ import cv2
 import torch.nn as nn
 import skimage.color as color
 import matplotlib.pyplot as plt
-from colorizationNetwork import ColorizationNetwork
+from colorizationNetwork import ColorizationNetwork, ColorizationNetworkv2
 from image_utils import *
 from dataset_utils import *
 from google_images_download import google_images_download
 
 BATCH_SIZE = 10
 LEARNING_RATE = 0.01
+EPOCH = 50
 
-
-def train(model, X, Y):
-    print("Debut de l'entrainement..")
+def training(model, X, Y, epoch):
     model.train()
     criterion = nn.MSELoss()
     optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
@@ -22,7 +21,7 @@ def train(model, X, Y):
     i = 0
     nbtotal = X.shape[0]
     for x, y in zip(X, Y):
-        print("Entrainement sur l'image {} sur {}".format(i, nbtotal))
+        print("Epoch {} : Entrainement image {} sur {}".format(epoch, i, nbtotal))
         x = x.reshape((1, 1, 256, 256))
         y = y.reshape((1, 2, 256, 256))
         yPredict = model(torch.from_numpy(x).float())
@@ -42,7 +41,7 @@ def main():
     # Image de test
     # X : Image en niveau de gris
     # Y : composantes a et b de l'image LAB
-    (originale, Xtest, Ytest) = ouvrirImage("test/landscapetest.jpg", affichage=False)
+    (originale, Xtest, Ytest) = ouvrirImage("test/street-test.jpg", affichage=False)
 
     # Telechargement Dataset
     if not os.path.exists("dataset"):
@@ -50,10 +49,16 @@ def main():
     (X, Y) = chargerDataset()
 
     # Creation du CNN
-    model = ColorizationNetwork()
+    model = ColorizationNetworkv2()
 
-    # Entrainement du modele
-    train(model, X, Y)
+    # Recuperer un modele existant si besoin
+    model.load_state_dict(torch.load("models/model-epoch-50-images-300.pth"))
+
+    # Sinon entrainer un nouveau modele 
+    # for epoch in range(EPOCH):
+    #     training(model, X, Y, epoch)
+
+    # torch.save(model.state_dict(), 'models/model-epoch-50-images-300.pth')
 
     # Petit test rapide pour rigoler
     Xtest = Xtest.reshape((1, 1, 256, 256))
@@ -62,9 +67,8 @@ def main():
     output = output.reshape((256,256,2))
     output = output * 128
     Xtest = Xtest.reshape((256, 256, 1))
-    save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
-    save_name = 'img-test.jpg'
-    afficherPrediction(Xtest, output, save_path=save_path, save_name=save_name)
+
+    afficherPrediction(originale, Xtest, output)
 
 
 
