@@ -64,7 +64,7 @@ def main():
     Xtest = Xtest.reshape((256, 256, 1))
     save_path = {'grayscale': 'outputs/gray/', 'colorized': 'outputs/color/'}
     save_name = 'img-test.jpg'
-    to_rgb(Xtest, output, save_path=save_path, save_name=save_name)
+    afficherPrediction(Xtest, output, save_path=save_path, save_name=save_name)
 
 
 
