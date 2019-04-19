@@ -83,3 +83,35 @@ class ColorizationNetworkv2(nn.Module):
     # Upsample to get colors
     output = self.upsample(midlevel_features)
     return output
+
+
+class ColorizationNetworkv3(nn.Module):
+    def __init__(self, input_size=128):
+        super(ColorizationNetworkv3, self).__init__()
+        MIDLEVEL_FEATURE_SIZE = 128
+       
+        self.upsample = nn.Sequential(     
+            nn.Conv2d(MIDLEVEL_FEATURE_SIZE, 128, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(128, 64, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(64, 32, kernel_size=3, padding=1, stride=1),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(32, 16, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Conv2d(16, 8, kernel_size=3, padding=1, stride=1),
+            nn.ReLU(),
+            nn.Conv2d(8, 4, kernel_size=3, stride=1, padding=1),
+            nn.ReLU(),
+            nn.Upsample(scale_factor=2),
+            nn.Conv2d(4, 2, kernel_size=3, padding=1, stride=1),
+            nn.ReLU(),
+            nn.Tanh()
+        )
+
+
+    def forward(self, input):
+
+        x = self.upsample(input)
+        return x
