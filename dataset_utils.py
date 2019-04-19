@@ -24,13 +24,14 @@ def chargerDataset():
     datasetX = []
     datasetY = []
     i = 0
+    print("debut chargement image")
     for image in os.listdir("dataset"):
         if (image.endswith('.jpg')):
             (_, X, Y) = ouvrirImage("dataset/" + image, affichage=False)
             datasetX.append(X)
             datasetY.append(Y/128)  
             print("image " + str(i) + "bien ajouté")
-            if i == 99:
+            if i == 1000:
                 print("fin de la recuperation des images")
                 break
             i += 1

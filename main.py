@@ -4,7 +4,7 @@ import cv2
 import torch.nn as nn
 import skimage.color as color
 import matplotlib.pyplot as plt
-from colorizationNetwork import ColorizationNetwork, ColorizationNetworkv2
+from colorizationNetwork import ColorizationNetworkv2
 from image_utils import *
 from dataset_utils import *
 from torch.autograd import Variable
@@ -17,7 +17,7 @@ EPOCH = 1
 def training(model, X, Y, epoch):
     model.train()
     criterion = nn.MSELoss()
-    optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+    optimizer = torch.optim.RMSprop(model.parameters(), lr=LEARNING_RATE)
     losses = []
     i = 0
     nbtotal = X.shape[0]
