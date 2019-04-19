@@ -39,7 +39,6 @@ def afficherPrediction(originale, grayscale, ab):
     subplot = f.add_subplot(1,3, 2)
     plt.imshow(grayscale.reshape((256,256)), cmap='gray', vmin=0, vmax=255)
     subplot.set_title("gris")
-
     lab = np.concatenate((grayscale, ab), axis=2)
     subplot = f.add_subplot(1,3, 3)
     plt.imshow(color.lab2rgb(lab))
