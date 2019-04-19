@@ -31,7 +31,7 @@ def chargerDataset():
             datasetX.append(X)
             datasetY.append(Y/128)  
             print("image " + str(i) + "bien ajouté")
-            if i == 1000:
+            if i == 100:
                 print("fin de la recuperation des images")
                 break
             i += 1
@@ -56,11 +56,11 @@ def ouvrirImage(path, affichage = False):
     # Converti en LAB
     img_lab = color.rgb2lab(img_rgb)
     # Grayscale part
-    img_gray = img_lab[:,:,0]
+    img_gray = color.rgb2gray(img_rgb)
     # Color part
     colors = img_lab[:,:,1:] 
     # Affichage initiale
     if (affichage):
         show_images([img_rgb, img_gray], titles=["Originale", "Niveau de gris"])
 
-    return (img_rgb, img_gray, colors)
+    return (img_rgb, img_gray * 255, colors)

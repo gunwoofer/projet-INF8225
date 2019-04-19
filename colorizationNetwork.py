@@ -85,9 +85,9 @@ class ColorizationNetworkv2(nn.Module):
     return output
 
 
-class ColorizationNetworkv3(nn.Module):
+class ColorizationNetworkv4(nn.Module):
     def __init__(self, input_size=128):
-        super(ColorizationNetworkv3, self).__init__()
+        super(ColorizationNetworkv4, self).__init__()
         MIDLEVEL_FEATURE_SIZE = 128
        
         self.upsample = nn.Sequential(     
@@ -97,7 +97,6 @@ class ColorizationNetworkv3(nn.Module):
             nn.ReLU(),
             nn.Conv2d(64, 32, kernel_size=3, padding=1, stride=1),
             nn.ReLU(),
-            nn.Upsample(scale_factor=2),
             nn.Conv2d(32, 16, kernel_size=3, stride=1, padding=1),
             nn.ReLU(),
             nn.Conv2d(16, 8, kernel_size=3, padding=1, stride=1),
@@ -107,6 +106,7 @@ class ColorizationNetworkv3(nn.Module):
             nn.Upsample(scale_factor=2),
             nn.Conv2d(4, 2, kernel_size=3, padding=1, stride=1),
             nn.ReLU(),
+            nn.Upsample(scale_factor=2),
             nn.Tanh()
         )
 

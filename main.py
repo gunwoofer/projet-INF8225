@@ -77,7 +77,6 @@ def main():
     print("output genere")
     output = output.reshape((256,256,2))
     output = output * 128
-    
     print("output traite")
     Xtest = Xtest.reshape((256, 256, 1))
     
