@@ -3,6 +3,7 @@ import cv2
 import numpy as np
 import skimage.color as color
 import torch
+from skimage.color import lab2rgb, rgb2lab, rgb2gray
 
 def afficherImageLAB(img_lab):
     plt.imshow(color.lab2rgb(img_lab))
@@ -20,7 +21,7 @@ def show_images(images, titles):
     f = plt.figure()
     for i in range(1, len(images) + 1):
         subplot = f.add_subplot(1,len(images), i)
-        # gray
+        gray
         if (len(images[i-1].shape) == 2):
             plt.imshow(images[i-1], cmap='gray')
         else:
@@ -57,7 +58,7 @@ def afficherPrediction(originale, grayscale, prediction):
     plt.show()
 
 
-def to_rgb(grayscale_input, ab_input, save_path=None, save_name=None):
+def to_rgb(grayscale_input, ab_input, afficher= None):
   '''Show/save rgb image from grayscale and ab channels
      Input save_path in the form {'grayscale': '/path/', 'colorized': '/path/'}'''
   plt.clf() # clear matplotlib 
@@ -67,6 +68,7 @@ def to_rgb(grayscale_input, ab_input, save_path=None, save_name=None):
   color_image[:, :, 1:3] = color_image[:, :, 1:3] * 255 - 128   
   color_image = lab2rgb(color_image.astype(np.float64))
   grayscale_input = grayscale_input.squeeze().numpy()
-  if save_path is not None and save_name is not None: 
-    plt.imsave(arr=grayscale_input, fname='{}{}'.format(save_path['grayscale'], save_name), cmap='gray')
-    plt.imsave(arr=color_image, fname='{}{}'.format(save_path['colorized'], save_name))
+  if afficher is not None:
+      plt.imshow(color_image)
+      plt.show()
+    

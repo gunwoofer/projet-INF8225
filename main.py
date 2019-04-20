@@ -44,7 +44,7 @@ def main():
     # X : Image en niveau de gris
     # Y : composantes a et b de l'image LAB
     # (originale, Xtest, Ytest) = ouvrirImage("test/street-test.jpg", affichage=False)
-    (originale, Xtest, Ytest) = ouvrirImage("test/testimagepourval.jpg", affichage=False)
+    (originale, Xtest, Ytest) = ouvrirImage("test/bateau.jpg", affichage=False)
     # afficherPrediction(originale, Xtest, Ytest)
     # Telechargement Dataset
     # if not os.path.exists("dataset"):
@@ -76,17 +76,22 @@ def main():
 
     # Petit test rapide pour rigoler
     Xtest = Xtest.reshape((1, 1, 256, 256))
-    Xtest_gpu =  Variable(torch.from_numpy(Xtest).float(), volatile=True)
+    Xtest_gpu =  Variable(torch.from_numpy(Xtest).float(), volatile=True).cuda()
+    model.cuda()
     output = model(Xtest_gpu).cpu().detach().numpy()
     
-    print("output genere")
-    output = output.reshape((256,256,2))
-    print("output traite")
-    Xtest = Xtest.reshape((256, 256, 1))
+    # print("output genere")
+    # output = output.reshape((256,256,2))
+    # output *= 128
+    # print("output traite")
+    # Xtest = Xtest.reshape((256, 256, 1))
     
-    print("affichage")
-    afficherPrediction(originale, Xtest, output)
+    # print("affichage")
+    #afficherPrediction(originale, Xtest, output)
+    var1 = Variable(torch.from_numpy(Xtest_gpu.cpu().detach().numpy().reshape(1, 256, 256)), volatile=True)
+    var2 = Variable(torch.from_numpy(output.reshape(2, 256, 256)))
 
+    to_rgb(var1, var2, afficher=True)
 
 def get_frame(input):
     w,h = input.shape[0], input.shape[1]
@@ -104,6 +109,8 @@ def get_frame(input):
     new_lab = np.concatenate((x, output), axis=2)
     rgb_output = color.lab2rgb(new_lab)
     rgb_output *= 255
+    plt.imshow(rgb_output.astype('uint8'))
+    plt.show()
     return rgb_output.astype('uint8')
 if __name__ == "__main__":
     main()
