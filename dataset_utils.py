@@ -3,8 +3,8 @@ import cv2
 import skimage.color as color
 import matplotlib.pyplot as plt
 import os
-from google_images_download import google_images_download
-
+# from google_images_download import google_images_download
+from image_utils import show_images
 SIZE_IMAGE = 256
 
 def telechargerDataSet(keywords, taille):
@@ -54,7 +54,7 @@ def ouvrirImage(path, affichage = False):
     img_rgb = cv2.imread(path)[...,::-1]
     img_rgb = cv2.resize(img_rgb, (SIZE_IMAGE,SIZE_IMAGE), interpolation = cv2.INTER_AREA)
     # Converti en LAB
-    img_lab = color.rgb2lab(img_rgb)
+    img_lab = color.rgb2lab(1.0/255*img_rgb)
     # Grayscale part
     img_gray = color.rgb2gray(img_rgb)
     # Color part
@@ -63,4 +63,4 @@ def ouvrirImage(path, affichage = False):
     if (affichage):
         show_images([img_rgb, img_gray], titles=["Originale", "Niveau de gris"])
 
-    return (img_rgb, img_gray * 255, colors)
+    return (img_rgb, img_gray, colors)
