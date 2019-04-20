@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
-
-cap = cv2.VideoCapture('julia.avi')
+from main import get_frame
+cap = cv2.VideoCapture('Video_output.avi')
 
 ret, frame = cap.read()
 print('ret =', ret, 'W =', frame.shape[1], 'H =', frame.shape[0], 'channel =', frame.shape[2])
@@ -9,25 +9,25 @@ print('ret =', ret, 'W =', frame.shape[1], 'H =', frame.shape[0], 'channel =', f
 
 FPS= 30.0
 FrameSize=(frame.shape[1], frame.shape[0])
-fourcc = cv2.VideoWriter_fourcc(*'XVID')
+fourcc = cv2.VideoWriter_fourcc(*'DIVX')
 
 frames = []
+i = 0
 while(cap.isOpened()):
+    print(i)
     ret, frame = cap.read()
 
     # check for successfulness of cap.read()
     if not ret: break
 
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    color = get_frame(frame)
     # Save the video
-    frames.append(gray)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-         break
-
+    frames.append(color)
+    i +=1
 cap.release()
 
-out = cv2.VideoWriter('Video_output.avi', fourcc, FPS, FrameSize, 0)
+out = cv2.VideoWriter('Video_couleur_output.avi', fourcc, FPS, (FrameSize), 1) # ATTENTION, DERNIER PARAM : ISCOLOR
 for frame in frames:
-	out.write(frame)
+    out.write(frame)
 out.release()
 cv2.destroyAllWindows()
