@@ -54,7 +54,7 @@ def ouvrirImage(path, affichage = False):
     img_rgb = cv2.imread(path)[...,::-1]
     img_rgb = cv2.resize(img_rgb, (SIZE_IMAGE,SIZE_IMAGE), interpolation = cv2.INTER_AREA)
     # Converti en LAB
-    img_lab = color.rgb2lab(1.0/255*img_rgb)
+    img_lab = color.rgb2lab(img_rgb)
     # Grayscale part
     img_gray = color.rgb2gray(img_rgb)
     # Color part

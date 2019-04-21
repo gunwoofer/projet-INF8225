@@ -1,7 +1,7 @@
 import numpy as np
 import cv2
 from main import get_frame
-cap = cv2.VideoCapture('Video_output.avi')
+cap = cv2.VideoCapture('julia.avi')
 
 ret, frame = cap.read()
 print('ret =', ret, 'W =', frame.shape[1], 'H =', frame.shape[0], 'channel =', frame.shape[2])
@@ -19,8 +19,9 @@ while(cap.isOpened()):
 
     # check for successfulness of cap.read()
     if not ret: break
+    gray = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 
-    color = get_frame(frame)
+    color = get_frame(gray)
     # Save the video
     frames.append(color)
     i +=1
