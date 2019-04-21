@@ -95,22 +95,22 @@ def main():
 
 def get_frame(input):
     w,h = input.shape[0], input.shape[1]
-    lab = color.rgb2lab(1.0/255*input)
-    ab = lab[:, :, 1:]
-    x = lab[:, :, 0]
+    # lab = color.rgb2lab(1.0/255*input)
+    # ab = lab[:, :, 1:]
+    x = input
     model = ColorizationNetworkv2()
-    model.load_state_dict(torch.load('models/model-epoch-4-losses-0.003.pth'))
+    model.load_state_dict(torch.load('models/model-epoch-8-losses-0.003.pth'))
     model.cuda()
 
     x = x.reshape((1, 1, w, h))
+    x = x / 255
     x_gpu =  Variable(torch.from_numpy(x).float(), volatile=True).cuda()
     output = model(x_gpu).cpu().detach().numpy().reshape((w, h, 2)) # output sous la forme ab
-    x = x.reshape(( w,h, 1 ))
-    new_lab = np.concatenate((x, output), axis=2)
-    rgb_output = color.lab2rgb(new_lab)
+    var1 = Variable(torch.from_numpy(x_gpu.cpu().detach().numpy().reshape(1, w, h)), volatile=True)
+    var2 = Variable(torch.from_numpy(output.reshape(2, w, h)))
+
+    rgb_output = to_rgb(var1, var2)
     rgb_output *= 255
-    plt.imshow(rgb_output.astype('uint8'))
-    plt.show()
     return rgb_output.astype('uint8')
 if __name__ == "__main__":
     main()
