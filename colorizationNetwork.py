@@ -42,6 +42,7 @@ class ColorizationNetwork(nn.Module):
         return output
 
 
+# We use this one
 class ColorizationNetworkv2(nn.Module):
     def __init__(self, input_size=128):
         super(ColorizationNetworkv2, self).__init__()
