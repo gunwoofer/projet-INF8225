@@ -14,6 +14,18 @@ Le script video.py vous permet d'utiliser le deep learning pour colorier la vid�
 Pour que l'architecture 2 fonctionne, veuillez télécharger le fichier suivant et le mettre dans le repertoire models : https://www.dropbox.com/s/kyo9b78aojljqj2/google_net_colorize.caffemodel?dl=0
 
 
+## Exemple utilisation video.py
+
+### Architecture 1: 
+
+video.py -i ./paysage_test.py -o ./output/output.avi -m models/model-epoch-8-losses-0.003.pth
+
+### Architecture 2: 
+
+video.py -i ./paysage_test.py -o ./output/output.avi
+
+
+
 ## Résultat
 
 Input en noir et blanc :
