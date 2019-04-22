@@ -111,7 +111,6 @@ def get_frame_googlenet(input):
     # init the google net model
     net = init_google_net()
 
-
     # Normalisation des données 
     scaled = input.astype("float32") / 255.0
     lab = cv2.cvtColor(scaled, cv2.COLOR_BGR2LAB)
@@ -135,11 +134,15 @@ def get_frame_googlenet(input):
     colorized = np.clip(colorized, 0, 1)
     return (255 * colorized).astype("uint8")
 
-def get_frame_model(input, model):
+def get_frame_model(input, model_path):
     w,h = input.shape[0], input.shape[1]
     x = input
     model = ColorizationNetworkv2()
-    model.load_state_dict(torch.load(model))
+
+    if not os.path.isfile(model_path):
+        print('error fichier n existe pas')
+        return 
+    model.load_state_dict(torch.load(model_path))
     model.cuda()
 
     x = x.reshape((1, 1, w, h))
